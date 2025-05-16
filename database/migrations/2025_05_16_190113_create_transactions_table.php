@@ -10,13 +10,14 @@ return new class extends Migration {
      */
     public function up(): void
     {
-        Schema::create('transaction', function (Blueprint $table) {
+        Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('number');
             $table->enum('movement', ['Charge', 'Payment']);
             $table->enum('currency', ['USD', 'PESO'])->default('USD');
             $table->decimal('amount', 15, 2)->default(0);
-            $table->foreignId('client_id')->constrained('clients')->onDelete('cascade')->nullable();
+            $table->string('description')->nullable();
+            $table->foreignId('guest_id')->constrained('guests')->onDelete('cascade')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

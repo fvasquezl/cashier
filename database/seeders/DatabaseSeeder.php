@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Guest;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,5 +20,12 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        User::factory()->create([
+            'name' => 'Faustino Vasquez',
+            'email' => 'fvasquez@example.com',
+        ]);
+
+        Guest::factory()->count(10)->create();
     }
 }
