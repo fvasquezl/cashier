@@ -12,8 +12,8 @@ class Client extends Model
         'contact_phone',
         'extra_info',
     ];
-    public function accounts()
+    public function transactions()
     {
-        return $this->hasMany(Account::class);
+        return $this->hasMany(Transaction::class);
     }
 }
