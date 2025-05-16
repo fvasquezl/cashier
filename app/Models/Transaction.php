@@ -11,13 +11,13 @@ class Transaction extends Model
             'movement',
             'currency',
             'amount',
-            'client_id',
+            'guest_id',
             'user_id'
       ];
 
-      public function client()
+      public function guest()
       {
-            return $this->belongsTo(Client::class);
+            return $this->belongsTo(Guest::class);
       }
       public function user()
       {
