@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->enum('movement', ['Charge', 'Payment']);
             $table->enum('currency', ['USD', 'PESO'])->default('USD');
             $table->decimal('amount', 15, 2)->default(0);
-            $table->string('description')->nullable();
             $table->foreignId('guest_id')->constrained('guests')->onDelete('cascade')->nullable();
+            $table->string('details')->nullable();
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->timestamps();
         });

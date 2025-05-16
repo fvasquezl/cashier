@@ -2,6 +2,8 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\Currency;
+use App\Enums\Movement;
 use App\Filament\Resources\TransactionResource\Pages;
 use App\Filament\Resources\TransactionResource\RelationManagers;
 use App\Models\Transaction;
@@ -23,23 +25,33 @@ class TransactionResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('number')
+                Forms\Components\Select::make('movement')
+                    ->options(
+                        collect(Movement::cases())
+                            ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                            ->toArray()
+                    )
                     ->required(),
-                Forms\Components\TextInput::make('movement')
+
+                Forms\Components\Select::make('currency')
+                    ->options(
+                        collect(Currency::cases())
+                            ->mapWithKeys(fn($case) => [$case->value => $case->label()])
+                            ->toArray()
+                    )
                     ->required(),
-                Forms\Components\TextInput::make('currency')
-                    ->required(),
+
                 Forms\Components\TextInput::make('amount')
                     ->required()
-                    ->numeric()
-                    ->default(0),
-                Forms\Components\TextInput::make('description'),
+                    ->prefixIcon('heroicon-m-currency-dollar')
+                    ->prefixIconColor('success')
+                    ->inputMode('decimal')
+                    ->placeholder('0.00'),
                 Forms\Components\Select::make('guest_id')
                     ->relationship('guest', 'name')
                     ->required(),
-                Forms\Components\Select::make('user_id')
-                    ->relationship('user', 'name')
-                    ->required(),
+                Forms\Components\RichEditor::make('details')
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -56,14 +68,15 @@ class TransactionResource extends Resource
                 Tables\Columns\TextColumn::make('amount')
                     ->numeric()
                     ->sortable(),
-                Tables\Columns\TextColumn::make('description')
+                Tables\Columns\TextColumn::make('details')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('guest.name')
                     ->numeric()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('user.name')
                     ->numeric()
-                    ->sortable(),
+                    ->sortable()
+                    ->toggleable(isToggledHiddenByDefault: true),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

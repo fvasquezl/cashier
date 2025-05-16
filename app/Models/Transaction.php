@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\Currency;
+use App\Enums\Movement;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -12,9 +14,14 @@ class Transaction extends Model
             'movement',
             'currency',
             'amount',
-            'description',
             'guest_id',
+            'details',
             'user_id',
+      ];
+      protected $casts = [
+            'movement' => Movement::class,
+            'currency' => Currency::class,
+            "amount" => "decimal:2",
       ];
 
 
